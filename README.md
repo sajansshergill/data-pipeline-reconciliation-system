@@ -1,5 +1,3 @@
-# Financial Portfolio Data Pipeline &amp; Reconciliation System
-
 # Financial Portfolio Data Pipeline & Reconciliation System
 
 A data engineering project that builds an end-to-end pipeline for ingesting, validating, and reconciling financial portfolio data. The system simulates how investment platforms and family offices process portfolio transactions to ensure data integrity and produce analytics-ready datasets.
