@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS portfolio_positions_reported;
 DROP TABLE IF EXISTS cash_balances;
+DROP TABLE IF EXISTS data_quality_results;
 
 CREATE TABLE transactions (
     transaction_id TEXT PRIMARY KEY,
@@ -23,4 +24,12 @@ CREATE TABLE cash_balances (
     account_id TEXT NOT NULL,
     cash_balance NUMERIC(18, 4) NOT NULL,
     balance_date DATE NOT NULL
+);
+
+CREATE TABLE data_quality_results (
+    run_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    check_name TEXT,
+    passed BOOLEAN,
+    failed_rows INTEGER,
+    message TEXT
 );
