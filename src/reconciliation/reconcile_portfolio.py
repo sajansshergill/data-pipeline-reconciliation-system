@@ -2,12 +2,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, Tuple
+from pathlib import Path
+import importlib.util
 
 import numpy as np
 import pandas as pd
 from sqlalchemy import text
 
-from config.db_config import engine
+# Load db_config from project root (works regardless of cwd/PYTHONPATH)
+_project_root = Path(__file__).resolve().parent.parent.parent
+_db_config_path = _project_root / "config" / "db_config.py"
+_spec = importlib.util.spec_from_file_location("db_config", _db_config_path)
+_db_config = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_db_config)
+engine = _db_config.engine
 
 
 @dataclass
