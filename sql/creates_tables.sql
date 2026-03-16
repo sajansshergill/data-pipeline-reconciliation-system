@@ -46,9 +46,10 @@ CREATE TABLE reconciliation_results (
     run_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     account_id TEXT NOT NULL,
     asset_symbol TEXT NOT NULL,
-    computed_quantity NUMERIC(18, 4) NOT NULL,
-    reported_quantity NUMERIC(18, 4) NOT NULL,
-    quantity_difference NUMERIC(18, 4) NOT NULL,
-    abs_difference NUMERIC(18, 4) NOT NULL,
-    valudation_date DATE,
+    computed_quantity NUMERIC(18,4) NOT NULL,
+    reported_quantity NUMERIC(18,4) NOT NULL,
+    quantity_difference NUMERIC(18,4) NOT NULL,
+    abs_difference NUMERIC(18,4) NOT NULL,
+    valuation_date DATE,
     status TEXT NOT NULL
+);
