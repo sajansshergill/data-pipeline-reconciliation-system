@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS stg_transactions;
-DROP TABLE IF EXISTS mart_portfolio_exposeure;
+DROP TABLE IF EXISTS mart_portfolio_exposure;
 DROP TABLE IF EXISTS mart_reconciliation_summary;
 DROP TABLE IF EXISTS mart_account_cash_summary;
 
