@@ -1,0 +1,5 @@
+metric,value
+data_quality_total_checks,8
+data_quality_failed_checks,0
+reconciliation_match_records,360
+reconciliation_mismatch_records,40

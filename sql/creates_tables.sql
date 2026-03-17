@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS portfolio_positions_reported;
 DROP TABLE IF EXISTS cash_balances;
 DROP TABLE IF EXISTS data_quality_results;
-DROP TABLE IF EXISTS portfolio_positions_reported;
+DROP TABLE IF EXISTS portfolio_positions_computed;
 DROP TABLE IF EXISTS reconciliation_results;
 
 CREATE TABLE transactions (
@@ -36,7 +36,7 @@ CREATE TABLE data_quality_results (
     message TEXT
 );
 
-CREATE TABLE portfolio_positions_reported (
+CREATE TABLE portfolio_positions_computed (
     account_id TEXT NOT NULL,
     asset_symbol TEXT NOT NULL,
     computed_quantity NUMERIC(18, 4) NOT NULL
