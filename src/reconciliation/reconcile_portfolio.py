@@ -140,7 +140,10 @@ def persist_computed_positions(computed_df: pd.DataFrame) -> None:
 
     with engine.begin() as connection:
         connection.execute(text(create_table_sql))
-        connection.execute(text("TRUNCATE TABLE portfolio_positions_computed"))
+        if engine.dialect.name == "sqlite":
+            connection.execute(text("DELETE FROM portfolio_positions_computed"))
+        else:
+            connection.execute(text("TRUNCATE TABLE portfolio_positions_computed"))
 
     computed_df.to_sql(
         "portfolio_positions_computed",
@@ -167,7 +170,10 @@ def persist_reconciliation_results(reconciliation_df: pd.DataFrame) -> None:
 
     with engine.begin() as connection:
         connection.execute(text(create_table_sql))
-        connection.execute(text("TRUNCATE TABLE reconciliation_results"))
+        if engine.dialect.name == "sqlite":
+            connection.execute(text("DELETE FROM reconciliation_results"))
+        else:
+            connection.execute(text("TRUNCATE TABLE reconciliation_results"))
 
     reconciliation_df.to_sql(
         "reconciliation_results",

@@ -1,34 +1,49 @@
+from __future__ import annotations
+
+import sys
 from pathlib import Path
-import importlib.util
 
 from sqlalchemy import text
 
-# Load db_config from project root (same pattern as other scripts)
-_project_root = Path(__file__).resolve().parent.parent.parent
-_db_config_path = _project_root / "config" / "db_config.py"
-_spec = importlib.util.spec_from_file_location("db_config", _db_config_path)
-_db_config = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_db_config)
-engine = _db_config.engine
+from config.db_config import engine
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__, "transformations.log")
 
 
 def main() -> None:
-    sql_file = Path("sql/transformations.sql")
+    try:
+        logger.info("Starting transformation pipeline")
 
-    if not sql_file.exists():
-        raise FileNotFoundError(f"SQL file not found: {sql_file}")
+        sql_file = Path("sql/transformations.sql")
 
-    sql_text = sql_file.read_text()
+        if not sql_file.exists():
+            raise FileNotFoundError(f"SQL file not found: {sql_file}")
 
-    with engine.begin() as connection:
-        connection.execute(text(sql_text))
+        sql_text = sql_file.read_text()
 
-    print("Transformation models executed successfully.")
-    print("Created tables:")
-    print("- stg_transactions")
-    print("- mart_portfolio_exposure")
-    print("- mart_reconciliation_summary")
-    print("- mart_account_cash_summary")
+        with engine.begin() as connection:
+            if engine.dialect.name == "sqlite":
+                raw = connection.connection  # DBAPI connection
+                raw.executescript(sql_text)
+            else:
+                statements = [s.strip() for s in sql_text.split(";") if s.strip()]
+                for stmt in statements:
+                    connection.execute(text(stmt))
+
+        logger.info("Transformation models executed successfully")
+
+        print("Transformation models executed successfully.")
+        print("Created tables:")
+        print("- stg_transactions")
+        print("- mart_portfolio_exposure")
+        print("- mart_reconciliation_summary")
+        print("- mart_account_cash_summary")
+
+    except Exception as exc:
+        logger.exception("Transformation pipeline failed")
+        print(f"Transformation failed: {exc}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

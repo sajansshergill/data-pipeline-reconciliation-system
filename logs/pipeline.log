@@ -1,0 +1,88 @@
+2026-03-17 10:28:43 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:28:43 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python src/ingestion/generate_fake_data.py
+2026-03-17 10:28:43 | ERROR | __main__ | Step failed: Generate synthetic financial data
+2026-03-17 10:28:59 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:28:59 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:29:00 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:29:00 | INFO | __main__ | Running step: Ingest raw data into PostgreSQL | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:29:00 | ERROR | __main__ | Step failed: Ingest raw data into PostgreSQL
+2026-03-17 10:29:20 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:29:20 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:29:20 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:29:20 | INFO | __main__ | Running step: Ingest raw data into PostgreSQL | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:29:21 | INFO | __main__ | Completed step: Ingest raw data into PostgreSQL
+2026-03-17 10:29:21 | INFO | __main__ | Running step: Run data quality validations | command=/opt/anaconda3/bin/python -m src.validation.run_validation
+2026-03-17 10:29:21 | INFO | __main__ | Completed step: Run data quality validations
+2026-03-17 10:29:21 | INFO | __main__ | Running step: Run portfolio reconciliation engine | command=/opt/anaconda3/bin/python -m src.reconciliation.run_reconciliation
+2026-03-17 10:29:22 | INFO | __main__ | Completed step: Run portfolio reconciliation engine
+2026-03-17 10:29:22 | INFO | __main__ | Running step: Run SQL transformation models | command=/opt/anaconda3/bin/python -m src.transformations.run_transformations
+2026-03-17 10:29:22 | INFO | __main__ | Completed step: Run SQL transformation models
+2026-03-17 10:29:22 | INFO | __main__ | Running step: Generate reporting outputs | command=/opt/anaconda3/bin/python -m src.reporting.run_reporting
+2026-03-17 10:29:23 | INFO | __main__ | Completed step: Generate reporting outputs
+2026-03-17 10:29:23 | INFO | __main__ | Pipeline completed successfully
+2026-03-17 10:32:49 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:32:49 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:32:49 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:32:49 | INFO | __main__ | Running step: Initialize database tables | command=/opt/anaconda3/bin/python -m src.db.init_db
+2026-03-17 10:32:49 | ERROR | __main__ | Step failed: Initialize database tables
+2026-03-17 10:33:13 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:33:13 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:33:13 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:33:13 | INFO | __main__ | Running step: Initialize database tables | command=/opt/anaconda3/bin/python -m src.db.init_db
+2026-03-17 10:33:14 | INFO | __main__ | Completed step: Initialize database tables
+2026-03-17 10:33:14 | INFO | __main__ | Running step: Ingest raw data into database | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:33:14 | INFO | __main__ | Completed step: Ingest raw data into database
+2026-03-17 10:33:14 | INFO | __main__ | Running step: Run data quality validations | command=/opt/anaconda3/bin/python -m src.validation.run_validation
+2026-03-17 10:33:14 | INFO | __main__ | Completed step: Run data quality validations
+2026-03-17 10:33:14 | INFO | __main__ | Running step: Run portfolio reconciliation engine | command=/opt/anaconda3/bin/python -m src.reconciliation.run_reconciliation
+2026-03-17 10:33:15 | INFO | __main__ | Completed step: Run portfolio reconciliation engine
+2026-03-17 10:33:15 | INFO | __main__ | Running step: Run SQL transformation models | command=/opt/anaconda3/bin/python -m src.transformations.run_transformations
+2026-03-17 10:33:15 | ERROR | __main__ | Step failed: Run SQL transformation models
+2026-03-17 10:34:05 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:34:05 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:34:06 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:34:06 | INFO | __main__ | Running step: Initialize database tables | command=/opt/anaconda3/bin/python -m src.db.init_db
+2026-03-17 10:34:06 | INFO | __main__ | Completed step: Initialize database tables
+2026-03-17 10:34:06 | INFO | __main__ | Running step: Ingest raw data into database | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:34:06 | INFO | __main__ | Completed step: Ingest raw data into database
+2026-03-17 10:34:06 | INFO | __main__ | Running step: Run data quality validations | command=/opt/anaconda3/bin/python -m src.validation.run_validation
+2026-03-17 10:34:07 | INFO | __main__ | Completed step: Run data quality validations
+2026-03-17 10:34:07 | INFO | __main__ | Running step: Run portfolio reconciliation engine | command=/opt/anaconda3/bin/python -m src.reconciliation.run_reconciliation
+2026-03-17 10:34:07 | INFO | __main__ | Completed step: Run portfolio reconciliation engine
+2026-03-17 10:34:07 | INFO | __main__ | Running step: Run SQL transformation models | command=/opt/anaconda3/bin/python -m src.transformations.run_transformations
+2026-03-17 10:34:07 | INFO | __main__ | Completed step: Run SQL transformation models
+2026-03-17 10:34:07 | INFO | __main__ | Running step: Generate reporting outputs | command=/opt/anaconda3/bin/python -m src.reporting.run_reporting
+2026-03-17 10:34:08 | INFO | __main__ | Completed step: Generate reporting outputs
+2026-03-17 10:34:08 | INFO | __main__ | Pipeline completed successfully
+2026-03-17 10:39:09 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:39:09 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:39:09 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:39:09 | INFO | __main__ | Running step: Initialize database tables | command=/opt/anaconda3/bin/python -m src.db.init_db
+2026-03-17 10:39:09 | INFO | __main__ | Completed step: Initialize database tables
+2026-03-17 10:39:09 | INFO | __main__ | Running step: Ingest raw data into database | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:39:10 | INFO | __main__ | Completed step: Ingest raw data into database
+2026-03-17 10:39:10 | INFO | __main__ | Running step: Run data quality validations | command=/opt/anaconda3/bin/python -m src.validation.run_validation
+2026-03-17 10:39:10 | INFO | __main__ | Completed step: Run data quality validations
+2026-03-17 10:39:10 | INFO | __main__ | Running step: Run portfolio reconciliation engine | command=/opt/anaconda3/bin/python -m src.reconciliation.run_reconciliation
+2026-03-17 10:39:11 | INFO | __main__ | Completed step: Run portfolio reconciliation engine
+2026-03-17 10:39:11 | INFO | __main__ | Running step: Run SQL transformation models | command=/opt/anaconda3/bin/python -m src.transformations.run_transformations
+2026-03-17 10:39:11 | INFO | __main__ | Completed step: Run SQL transformation models
+2026-03-17 10:39:11 | INFO | __main__ | Running step: Generate reporting outputs | command=/opt/anaconda3/bin/python -m src.reporting.run_reporting
+2026-03-17 10:39:11 | INFO | __main__ | Completed step: Generate reporting outputs
+2026-03-17 10:39:11 | INFO | __main__ | Pipeline completed successfully
+2026-03-17 10:40:21 | INFO | __main__ | Starting full pipeline run
+2026-03-17 10:40:21 | INFO | __main__ | Running step: Generate synthetic financial data | command=/opt/anaconda3/bin/python -m src.ingestion.generate_fake_data
+2026-03-17 10:40:22 | INFO | __main__ | Completed step: Generate synthetic financial data
+2026-03-17 10:40:22 | INFO | __main__ | Running step: Initialize database tables | command=/opt/anaconda3/bin/python -m src.db.init_db
+2026-03-17 10:40:22 | INFO | __main__ | Completed step: Initialize database tables
+2026-03-17 10:40:22 | INFO | __main__ | Running step: Ingest raw data into database | command=/opt/anaconda3/bin/python -m src.ingestion.ingest_transactions
+2026-03-17 10:40:22 | INFO | __main__ | Completed step: Ingest raw data into database
+2026-03-17 10:40:22 | INFO | __main__ | Running step: Run data quality validations | command=/opt/anaconda3/bin/python -m src.validation.run_validation
+2026-03-17 10:40:23 | INFO | __main__ | Completed step: Run data quality validations
+2026-03-17 10:40:23 | INFO | __main__ | Running step: Run portfolio reconciliation engine | command=/opt/anaconda3/bin/python -m src.reconciliation.run_reconciliation
+2026-03-17 10:40:23 | INFO | __main__ | Completed step: Run portfolio reconciliation engine
+2026-03-17 10:40:23 | INFO | __main__ | Running step: Run SQL transformation models | command=/opt/anaconda3/bin/python -m src.transformations.run_transformations
+2026-03-17 10:40:23 | INFO | __main__ | Completed step: Run SQL transformation models
+2026-03-17 10:40:23 | INFO | __main__ | Running step: Generate reporting outputs | command=/opt/anaconda3/bin/python -m src.reporting.run_reporting
+2026-03-17 10:40:24 | INFO | __main__ | Completed step: Generate reporting outputs
+2026-03-17 10:40:24 | INFO | __main__ | Pipeline completed successfully

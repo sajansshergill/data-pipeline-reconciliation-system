@@ -2,7 +2,7 @@
 
 A data engineering project that builds an end-to-end pipeline for ingesting, validating, and reconciling financial portfolio data. The system simulates how investment platforms and family offices process portfolio transactions to ensure data integrity and produce analytics-ready datasets.
 
-This project demonstrates **financial data engineering, ETL pipelines, reconciliation logic, and data quality monitoring** using Python, SQL, and PostgreSQL.
+This project demonstrates **financial data engineering, ETL pipelines, reconciliation logic, and data quality monitoring** using Python, SQL, and a database backend (PostgreSQL locally, **SQLite for Streamlit Cloud**).
 
 ---
 
@@ -43,7 +43,7 @@ Ingestion Layer
 Python + Pandas ETL
     │
     ▼
-PostgreSQL Data Warehouse
+Database Warehouse
 Transactions / Positions / Balances
     │
     ▼
@@ -84,7 +84,7 @@ src/
        reconcile_portfolio.py
 
 sql/
-   create_tables.sql
+   creates_tables.sql
    transformations.sql
 
 notebooks/
@@ -173,6 +173,7 @@ Any discrepancies between computed and reported balances are flagged in a **reco
 Python
 Pandas
 PostgreSQL
+SQLite (Streamlit Cloud demo backend)
 SQLAlchemy
 NumPy
 Docker
@@ -181,6 +182,32 @@ Faker (synthetic financial data generation)
 ---
 
 # Setup Instructions
+
+## Option A (recommended): Streamlit Community Cloud (no Docker)
+
+This repo is Cloud-friendly by default. It uses a **file-backed SQLite database** at `data/pipeline.db`.
+
+1) Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+2) Run the pipeline end-to-end (generates fresh `data/raw/*.csv`, builds `data/pipeline.db`, and writes `reports/*.csv`):
+
+```
+DB_BACKEND=sqlite python -m src.main
+```
+
+3) Start the dashboard:
+
+```
+DB_BACKEND=sqlite streamlit run app.py
+```
+
+On Streamlit Cloud, set `DB_BACKEND=sqlite` (or rely on the default) and use `app.py` as the entrypoint.
+
+## Option B: Local Docker Postgres (optional)
 
 ### 1. Clone Repository
 
@@ -206,31 +233,19 @@ docker compose up -d
 ### 4. Create Database Tables
 
 ```
-psql -U postgres -d portfolio_db -f sql/create_tables.sql
+make tables
 ```
 
-### 5. Generate Synthetic Financial Data
+### 5. Run End-to-End Pipeline
 
 ```
-python src/ingestion/generate_fake_data.py
+python -m src.main
 ```
 
-### 6. Run ETL Pipeline
+### 6. Launch the Dashboard
 
 ```
-python src/ingestion/ingest_transactions.py
-```
-
-### 7. Run Data Quality Checks
-
-```
-python src/validation/data_quality_checks.py
-```
-
-### 8. Run Portfolio Reconciliation
-
-```
-python src/reconciliation/reconcile_portfolio.py
+streamlit run app.py
 ```
 
 ---

@@ -1,10 +1,17 @@
+from __future__ import annotations
+
 import os
 import random
+import sys
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
 from faker import Faker
+
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__, "generation.log")
 
 fake = Faker()
 random.seed(42)
@@ -61,7 +68,8 @@ def generate_reported_positions(transactions_df: pd.DataFrame) -> pd.DataFrame:
     if len(reported) > 10:
         sampled_idx = reported.sample(frac=0.1, random_state=42).index
         reported.loc[sampled_idx, "reported_quantity"] = (
-            reported.loc[sampled_idx, "reported_quantity"] + np.random.uniform(-5, 5, len(sampled_idx))
+            reported.loc[sampled_idx, "reported_quantity"]
+            + np.random.uniform(-5, 5, len(sampled_idx))
         ).round(2)
 
     return reported
@@ -83,21 +91,33 @@ def generate_cash_balances(num_accounts: int = 50) -> pd.DataFrame:
 
 
 def main() -> None:
-    transactions_df = generate_transactions(10000)
-    positions_df = generate_reported_positions(transactions_df)
-    cash_df = generate_cash_balances(50)
+    try:
+        logger.info("Starting synthetic data generation")
 
-    transactions_path = os.path.join(RAW_DIR, "transactions.csv")
-    positions_path = os.path.join(RAW_DIR, "portfolio_positions_reported.csv")
-    cash_path = os.path.join(RAW_DIR, "cash_balances.csv")
+        transactions_df = generate_transactions(10000)
+        positions_df = generate_reported_positions(transactions_df)
+        cash_df = generate_cash_balances(50)
 
-    transactions_df.to_csv(transactions_path, index=False)
-    positions_df.to_csv(positions_path, index=False)
-    cash_df.to_csv(cash_path, index=False)
+        transactions_path = os.path.join(RAW_DIR, "transactions.csv")
+        positions_path = os.path.join(RAW_DIR, "portfolio_positions_reported.csv")
+        cash_path = os.path.join(RAW_DIR, "cash_balances.csv")
 
-    print(f"Generated: {transactions_path} ({len(transactions_df)} rows)")
-    print(f"Generated: {positions_path} ({len(positions_df)} rows)")
-    print(f"Generated: {cash_path} ({len(cash_df)} rows)")
+        transactions_df.to_csv(transactions_path, index=False)
+        positions_df.to_csv(positions_path, index=False)
+        cash_df.to_csv(cash_path, index=False)
+
+        logger.info("Generated transactions file: %s rows", len(transactions_df))
+        logger.info("Generated reported positions file: %s rows", len(positions_df))
+        logger.info("Generated cash balances file: %s rows", len(cash_df))
+
+        print(f"Generated: {transactions_path} ({len(transactions_df)} rows)")
+        print(f"Generated: {positions_path} ({len(positions_df)} rows)")
+        print(f"Generated: {cash_path} ({len(cash_df)} rows)")
+
+    except Exception as exc:
+        logger.exception("Synthetic data generation failed")
+        print(f"Data generation failed: {exc}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,145 @@
+2026-03-17 10:29:22 | INFO | __main__ | Starting transformation pipeline
+2026-03-17 10:29:22 | INFO | __main__ | Transformation models executed successfully
+2026-03-17 10:33:15 | INFO | __main__ | Starting transformation pipeline
+2026-03-17 10:33:15 | ERROR | __main__ | Transformation pipeline failed
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: You can only execute one statement at a time.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sajanshergill/https:/github.com/sajansshergill/data-pipeline-reconciliation-system.git/src/transformations/run_transformations.py", line 26, in main
+    connection.execute(text(sql_text))
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (sqlite3.ProgrammingError) You can only execute one statement at a time.
+[SQL: DROP TABLE IF EXISTS stg_transactions;
+DROP TABLE IF EXISTS mart_portfolio_exposure;
+DROP TABLE IF EXISTS mart_reconciliation_summary;
+DROP TABLE IF EXISTS mart_account_cash_summary;
+
+CREATE TABLE stg_transactions AS
+SELECT
+    transaction_id,
+    TRIM(account_id) AS account_id,
+    UPPER(TRIM(asset_symbol)) AS asset_symbol,
+    UPPER(TRIM(transaction_type)) AS transaction_type,
+    CAST(quantity AS NUMERIC(18, 4)) AS quantity,
+    CAST(price AS NUMERIC(18, 4)) AS price,
+    CAST(quantity * price AS NUMERIC(18, 4)) AS gross_amount,
+    CAST(transaction_date AS TIMESTAMP) AS transaction_date,
+    CAST(transaction_date AS DATE) AS transaction_day
+FROM transactions
+WHERE
+    transaction_id IS NOT NULL
+    AND account_id IS NOT NULL
+    AND asset_symbol IS NOT NULL
+    AND transaction_type IN ('BUY', 'SELL')
+    AND quantity > 0
+    AND price > 0;
+
+CREATE TABLE mart_portfolio_exposure AS
+SELECT
+    c.account_id,
+    c.asset_symbol,
+    c.computed_quantity,
+    COALESCE(
+        AVG(NULLIF(t.price, 0)),
+        0
+    ) AS avg_traded_price,
+    (c.computed_quantity * COALESCE(AVG(NULLIF(t.price, 0)), 0)) AS estimated_market_value
+FROM portfolio_positions_computed c
+LEFT JOIN stg_transactions t
+    ON c.account_id = t.account_id
+    AND c.asset_symbol = t.asset_symbol
+GROUP BY
+    c.account_id,
+    c.asset_symbol,
+    c.computed_quantity;
+
+CREATE TABLE mart_reconciliation_summary AS
+SELECT
+    account_id,
+    COUNT(*) AS assets_compared,
+    SUM(CASE WHEN status = 'MATCH' THEN 1 ELSE 0 END) AS matched_assets,
+    SUM(CASE WHEN status = 'MISMATCH' THEN 1 ELSE 0 END) AS mismatched_assets,
+    ROUND(AVG(abs_difference), 4) AS avg_abs_difference,
+    ROUND(MAX(abs_difference), 4) AS max_abs_difference
+FROM reconciliation_results
+GROUP BY account_id;
+
+CREATE TABLE mart_account_cash_summary AS
+SELECT
+    cb.account_id,
+    cb.cash_balance,
+    cb.balance_date,
+    COALESCE(SUM(mpe.estimated_market_value), 0) AS estimated_portfolio_value,
+        (cb.cash_balance + COALESCE(SUM(mpe.estimated_market_value), 0)) AS estimated_total_account_value
+FROM cash_balances cb
+LEFT JOIN mart_portfolio_exposure mpe
+    ON cb.account_id = mpe.account_id
+GROUP BY
+    cb.account_id,
+    cb.cash_balance,
+    cb.balance_date;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-03-17 10:34:07 | INFO | __main__ | Starting transformation pipeline
+2026-03-17 10:34:07 | INFO | __main__ | Transformation models executed successfully
+2026-03-17 10:39:11 | INFO | __main__ | Starting transformation pipeline
+2026-03-17 10:39:11 | INFO | __main__ | Transformation models executed successfully
+2026-03-17 10:40:23 | INFO | __main__ | Starting transformation pipeline
+2026-03-17 10:40:23 | INFO | __main__ | Transformation models executed successfully

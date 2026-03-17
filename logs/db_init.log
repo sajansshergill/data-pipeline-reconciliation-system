@@ -1,0 +1,126 @@
+2026-03-17 10:32:49 | ERROR | __main__ | Database init failed
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: You can only execute one statement at a time.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sajanshergill/https:/github.com/sajansshergill/data-pipeline-reconciliation-system.git/src/db/init_db.py", line 24, in main
+    connection.execute(text(sql_text))
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (sqlite3.ProgrammingError) You can only execute one statement at a time.
+[SQL: DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS portfolio_positions_reported;
+DROP TABLE IF EXISTS cash_balances;
+DROP TABLE IF EXISTS data_quality_results;
+DROP TABLE IF EXISTS portfolio_positions_computed;
+DROP TABLE IF EXISTS reconciliation_results;
+
+CREATE TABLE transactions (
+    transaction_id TEXT PRIMARY KEY,
+    account_id TEXT NOT NULL,
+    asset_symbol TEXT NOT NULL,
+    transaction_type TEXT NOT NULL,
+    quantity NUMERIC(18, 4) NOT NULL,
+    price NUMERIC(18, 4) NOT NULL,
+    transaction_date TIMESTAMP NOT NULL
+);
+
+CREATE TABLE portfolio_positions_reported (
+    account_id TEXT NOT NULL,
+    asset_symbol TEXT NOT NULL,
+    reported_quantity NUMERIC(18, 4) NOT NULL,
+    valuation_date DATE NOT NULL
+);
+
+CREATE TABLE cash_balances (
+    account_id TEXT NOT NULL,
+    cash_balance NUMERIC(18, 4) NOT NULL,
+    balance_date DATE NOT NULL
+);
+
+CREATE TABLE data_quality_results (
+    run_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    check_name TEXT,
+    passed BOOLEAN,
+    failed_rows INTEGER,
+    message TEXT
+);
+
+CREATE TABLE portfolio_positions_computed (
+    account_id TEXT NOT NULL,
+    asset_symbol TEXT NOT NULL,
+    computed_quantity NUMERIC(18, 4) NOT NULL
+);
+
+CREATE TABLE reconciliation_results (
+    run_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    account_id TEXT NOT NULL,
+    asset_symbol TEXT NOT NULL,
+    computed_quantity NUMERIC(18,4) NOT NULL,
+    reported_quantity NUMERIC(18,4) NOT NULL,
+    quantity_difference NUMERIC(18,4) NOT NULL,
+    abs_difference NUMERIC(18,4) NOT NULL,
+    valuation_date DATE,
+    status TEXT NOT NULL
+);]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-03-17 10:33:14 | INFO | __main__ | Database tables created successfully
+2026-03-17 10:34:06 | INFO | __main__ | Database tables created successfully
+2026-03-17 10:39:09 | INFO | __main__ | Database tables created successfully
+2026-03-17 10:40:22 | INFO | __main__ | Database tables created successfully

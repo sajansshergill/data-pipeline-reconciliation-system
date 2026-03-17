@@ -12,11 +12,19 @@ from src.dashboard.data_loader import (
     load_reconciliation_results,
     load_reconciliation_summary,
 )
+from src.dashboard.ui_utils import (
+    apply_reconciliation_filters,
+    download_csv_button,
+    format_currency,
+    render_sidebar_filters,
+    utc_now,
+)
 
 
 st.set_page_config(
     page_title="Financial Portfolio Reconciliation Dashboard",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 
@@ -46,21 +54,23 @@ def get_data_quality_results() -> pd.DataFrame:
 
 
 def main() -> None:
-    st.title("Financial Portfolio Data Pipeline & Reconciliation Dashboard")
-    st.markdown(
-        "Interactive dashboard for portfolio reconciliation, exposure analysis, "
-        "account valuation, and data quality monitoring."
+    st.title("Financial Portfolio Reconciliation Dashboard")
+    st.caption(
+        "Reconciliation, exposure analytics, account valuation, and data quality monitoring."
     )
 
     backend = get_backend_info()
-    if backend["backend"] != "postgres":
-        st.warning(f"Running in **{backend['backend']}** mode. {backend['details']}")
+    st.sidebar.caption(f"Backend: **{backend['backend']}**")
+    st.sidebar.caption(backend["details"])
 
     reconciliation_df = get_reconciliation_results()
     recon_summary_df = get_reconciliation_summary()
     exposure_df = get_portfolio_exposure()
     account_values_df = get_account_values()
     dq_df = get_data_quality_results()
+
+    filters = render_sidebar_filters(reconciliation_df=reconciliation_df)
+    reconciliation_filtered = apply_reconciliation_filters(reconciliation_df, filters)
 
     total_records = len(reconciliation_df)
     matched_records = int((reconciliation_df["status"] == "MATCH").sum())
@@ -79,6 +89,17 @@ def main() -> None:
     col3.metric("Mismatched Records", f"{mismatched_records:,}")
     col4.metric("Match Rate", f"{match_rate}%")
     col5.metric("DQ Failed Checks", f"{failed_dq_checks:,}")
+
+    meta_left, meta_right = st.columns([2, 1])
+    with meta_left:
+        st.caption(f"Last refreshed: {utc_now().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    with meta_right:
+        download_csv_button(
+            label="Download reconciliation (filtered)",
+            df=reconciliation_filtered,
+            file_name="reconciliation_filtered.csv",
+            key="dl_recon_filtered_home",
+        )
 
     st.divider()
 
@@ -156,32 +177,12 @@ def main() -> None:
 
     st.subheader("Reconciliation Results Explorer")
 
-    status_filter = st.multiselect(
-        "Filter by status",
-        options=sorted(reconciliation_df["status"].dropna().unique().tolist()),
-        default=sorted(reconciliation_df["status"].dropna().unique().tolist()),
-    )
-
-    account_filter = st.selectbox(
-        "Filter by account",
-        options=["All"] + sorted(reconciliation_df["account_id"].dropna().unique().tolist()),
-    )
-
-    filtered_reconciliation = reconciliation_df[
-        reconciliation_df["status"].isin(status_filter)
-    ].copy()
-
-    if account_filter != "All":
-        filtered_reconciliation = filtered_reconciliation[
-            filtered_reconciliation["account_id"] == account_filter
-        ]
-
-    st.dataframe(filtered_reconciliation, use_container_width=True)
+    st.dataframe(reconciliation_filtered, use_container_width=True, height=360)
 
     st.divider()
 
     st.subheader("Data Quality Results")
-    st.dataframe(dq_df, use_container_width=True)
+    st.dataframe(dq_df, use_container_width=True, height=260)
 
     st.divider()
 
@@ -189,9 +190,10 @@ def main() -> None:
     st.dataframe(
         account_values_df.sort_values("estimated_total_account_value", ascending=False),
         use_container_width=True,
+        height=260,
     )
 
-    st.caption(f"Estimated total account value across all accounts: {total_account_value:,.2f}")
+    st.caption(f"Estimated total account value across all accounts: {format_currency(total_account_value)}")
 
 
 if __name__ == "__main__":

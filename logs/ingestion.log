@@ -1,0 +1,40 @@
+2026-03-17 10:29:21 | INFO | __main__ | Starting ingestion pipeline
+2026-03-17 10:29:21 | INFO | __main__ | Loading CSV file: data/raw/transactions.csv
+2026-03-17 10:29:21 | INFO | __main__ | Loading CSV file: data/raw/portfolio_positions_reported.csv
+2026-03-17 10:29:21 | INFO | __main__ | Loading CSV file: data/raw/cash_balances.csv
+2026-03-17 10:29:21 | INFO | __main__ | Loaded 10000 rows into 'transactions'
+2026-03-17 10:29:21 | INFO | __main__ | Loaded 400 rows into 'portfolio_positions_reported'
+2026-03-17 10:29:21 | INFO | __main__ | Loaded 50 rows into 'cash_balances'
+2026-03-17 10:29:21 | INFO | __main__ | Ingestion pipeline completed successfully
+2026-03-17 10:33:14 | INFO | __main__ | Starting ingestion pipeline
+2026-03-17 10:33:14 | INFO | __main__ | Loading CSV file: data/raw/transactions.csv
+2026-03-17 10:33:14 | INFO | __main__ | Loading CSV file: data/raw/portfolio_positions_reported.csv
+2026-03-17 10:33:14 | INFO | __main__ | Loading CSV file: data/raw/cash_balances.csv
+2026-03-17 10:33:14 | INFO | __main__ | Loaded 10000 rows into 'transactions'
+2026-03-17 10:33:14 | INFO | __main__ | Loaded 400 rows into 'portfolio_positions_reported'
+2026-03-17 10:33:14 | INFO | __main__ | Loaded 50 rows into 'cash_balances'
+2026-03-17 10:33:14 | INFO | __main__ | Ingestion pipeline completed successfully
+2026-03-17 10:34:06 | INFO | __main__ | Starting ingestion pipeline
+2026-03-17 10:34:06 | INFO | __main__ | Loading CSV file: data/raw/transactions.csv
+2026-03-17 10:34:06 | INFO | __main__ | Loading CSV file: data/raw/portfolio_positions_reported.csv
+2026-03-17 10:34:06 | INFO | __main__ | Loading CSV file: data/raw/cash_balances.csv
+2026-03-17 10:34:06 | INFO | __main__ | Loaded 10000 rows into 'transactions'
+2026-03-17 10:34:06 | INFO | __main__ | Loaded 400 rows into 'portfolio_positions_reported'
+2026-03-17 10:34:06 | INFO | __main__ | Loaded 50 rows into 'cash_balances'
+2026-03-17 10:34:06 | INFO | __main__ | Ingestion pipeline completed successfully
+2026-03-17 10:39:10 | INFO | __main__ | Starting ingestion pipeline
+2026-03-17 10:39:10 | INFO | __main__ | Loading CSV file: data/raw/transactions.csv
+2026-03-17 10:39:10 | INFO | __main__ | Loading CSV file: data/raw/portfolio_positions_reported.csv
+2026-03-17 10:39:10 | INFO | __main__ | Loading CSV file: data/raw/cash_balances.csv
+2026-03-17 10:39:10 | INFO | __main__ | Loaded 10000 rows into 'transactions'
+2026-03-17 10:39:10 | INFO | __main__ | Loaded 400 rows into 'portfolio_positions_reported'
+2026-03-17 10:39:10 | INFO | __main__ | Loaded 50 rows into 'cash_balances'
+2026-03-17 10:39:10 | INFO | __main__ | Ingestion pipeline completed successfully
+2026-03-17 10:40:22 | INFO | __main__ | Starting ingestion pipeline
+2026-03-17 10:40:22 | INFO | __main__ | Loading CSV file: data/raw/transactions.csv
+2026-03-17 10:40:22 | INFO | __main__ | Loading CSV file: data/raw/portfolio_positions_reported.csv
+2026-03-17 10:40:22 | INFO | __main__ | Loading CSV file: data/raw/cash_balances.csv
+2026-03-17 10:40:22 | INFO | __main__ | Loaded 10000 rows into 'transactions'
+2026-03-17 10:40:22 | INFO | __main__ | Loaded 400 rows into 'portfolio_positions_reported'
+2026-03-17 10:40:22 | INFO | __main__ | Loaded 50 rows into 'cash_balances'
+2026-03-17 10:40:22 | INFO | __main__ | Ingestion pipeline completed successfully

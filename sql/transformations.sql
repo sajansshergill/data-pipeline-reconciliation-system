@@ -31,8 +31,8 @@ SELECT
     COALESCE(
         AVG(NULLIF(t.price, 0)),
         0
-    ):: NUMERIC(18, 4) AS avg_traded_price,
-    (c.computed_quantity * COALESCE(AVG(NULLIF(t.price, 0)), 0))::NUMERIC(18, 4) AS estimated_market_value
+    ) AS avg_traded_price,
+    (c.computed_quantity * COALESCE(AVG(NULLIF(t.price, 0)), 0)) AS estimated_market_value
 FROM portfolio_positions_computed c
 LEFT JOIN stg_transactions t
     ON c.account_id = t.account_id
@@ -58,8 +58,8 @@ SELECT
     cb.account_id,
     cb.cash_balance,
     cb.balance_date,
-    COALESCE(SUM(mpe.estimated_market_value), 0)::NUMERIC(18, 4) AS estimated_portfolio_value,
-        (cb.cash_balance + COALESCE(SUM(mpe.estimated_market_value), 0))::NUMERIC(18, 4) AS estimated_total_account_value
+    COALESCE(SUM(mpe.estimated_market_value), 0) AS estimated_portfolio_value,
+        (cb.cash_balance + COALESCE(SUM(mpe.estimated_market_value), 0)) AS estimated_total_account_value
 FROM cash_balances cb
 LEFT JOIN mart_portfolio_exposure mpe
     ON cb.account_id = mpe.account_id
