@@ -6,3 +6,4 @@ faker
 python-dotenv
 streamlit
 plotly
+altair<5
