@@ -187,6 +187,12 @@ Faker (synthetic financial data generation)
 
 This repo is Cloud-friendly by default. It uses a **file-backed SQLite database** at `data/pipeline.db`.
 
+### Streamlit Cloud dependency note
+
+Streamlit Cloud may default to a newer Python version. This repo includes `runtime.txt` to pin the Cloud runtime to **Python 3.12** for maximum compatibility.
+
+This project also pins a modern Streamlit release (see `requirements.txt`) and constrains Altair to a compatible major version.
+
 1) Install dependencies:
 
 ```
@@ -205,7 +211,8 @@ DB_BACKEND=sqlite python -m src.main
 DB_BACKEND=sqlite streamlit run app.py
 ```
 
-On Streamlit Cloud, set `DB_BACKEND=sqlite` (or rely on the default) and use `app.py` as the entrypoint.
+On Streamlit Cloud:
+- set `DB_BACKEND=sqlite` (or rely on the default)\n+- use `app.py` as the entrypoint\n+- if you update `requirements.txt`, restart the app so dependencies reinstall cleanly
 
 ## Option B: Local Docker Postgres (optional)
 

@@ -4,6 +4,6 @@ sqlalchemy
 psycopg2-binary
 faker
 python-dotenv
-streamlit
+streamlit>=1.43.2
 plotly
-altair<5
+altair>=5,<6
